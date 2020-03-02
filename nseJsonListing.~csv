@@ -1,0 +1,20 @@
+Name,Json Link
+Nifty 50,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/niftyStockWatch.json
+Nifty Next 50,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/juniorNiftyStockWatch.json
+Nifty Midcap 50,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/niftyMidcap50StockWatch.json
+Nifty Midcap 150,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/niftyMidcap150OnlineStockWatch.json
+Nifty Midcap 400,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/niftyMidsml400OnlineStockWatch.json
+Nifty Smlcap 50,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/niftySmallcap50OnlineStockWatch.json
+Nifty Smlcap 250,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/niftySmallcap250OnlineStockWatch.json
+Nifty Auto,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/cnxAutoStockWatch.json
+Nifty Bank,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/bankNiftyStockWatch.json
+Nifty Energy,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/cnxEnergyStockWatch.json
+Nifty Financial Services,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/cnxFinanceStockWatch.json
+Nifty FMCG,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/cnxFMCGStockWatch.json
+Nifty IT,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/cnxitStockWatch.json
+Nifty Media,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/cnxMediaStockWatch.json
+Nifty Metal,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/cnxMetalStockWatch.json
+Nifty Pharma,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/cnxPharmaStockWatch.json
+Nifty PSU Bank,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/cnxPSUStockWatch.json
+Nifty Realty,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/cnxRealtyStockWatch.json
+Nifty Private Bank,https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/niftyPvtBankStockWatch.json
