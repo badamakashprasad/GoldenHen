@@ -1,3 +1,3 @@
-cd c:/Users/HP/Desktop/Project Golden Hen
-C:/ProgramData/Anaconda3/python.exe "c:/Users/HP/Desktop/Project Golden Hen/data_receiver.py"
+cd D:/GoldenHen
+C:/Users/bvspr/anaconda3/python.exe "D:/GoldenHen/nse_data_receiver.py"
 cmd /k

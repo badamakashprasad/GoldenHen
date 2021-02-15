@@ -45,7 +45,7 @@ def get_latest_open_day(today = date.today()):
 download_data = lambda path,url,name : open(name,'wb').write(requests.get(url,allow_redirects=True).content)
 push_object = lambda name,obj : pickle.dump(obj,name)
 pull_object = lambda name : pickle.load(open(name,"rb"))
-
+cln = lambda _ : _.strip()
 
 
 
@@ -87,7 +87,7 @@ def get_json_data(link):
         print("Error in retriving : {} Retrying in 5 secs...".format(link))
         time.sleep(5)
         get_json_data(link)
-    return data['data']
+    return data['data'],timestamp
 
 
 
@@ -101,6 +101,18 @@ def get_quote_json(symbol):
 
 
 
+def get_info_companies(symbol):
+        info_dict = {}
+        info_url = f'https://www1.nseindia.com/marketinfo/companyTracker/compInfo.jsp?symbol={symbol}&series=EQ'
+        data = requests.get(info_url,headers = HEADERS).content
+        soup = BeautifulSoup(data,features="lxml")
+        for a in soup.find_all('td'):
+            if a.find('b') is None:
+                break
+            elif a.find('b').get_text().find(":") is not -1:
+                temp_info_ls = a.get_text().split(":")
+                info_dict[cln(temp_info_ls[0])] = cln(temp_info_ls[1])
+        return info_dict
 
 
 #----------------------------------------    Runnable functions    --------------------------------------------------

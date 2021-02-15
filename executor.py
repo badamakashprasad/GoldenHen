@@ -1,3 +1,4 @@
+import Atom as base
 import json
 import requests
 import os
@@ -11,10 +12,6 @@ HEADERS = {
 }
 
 
-def get_json_data(link):
-    data = json.loads(requests.get(link,headers = HEADERS).content)
-    print(data['data'])
-    return data['data']
 
 def get_all_nse_listed_companies():
     urls = ["https://www1.nseindia.com/education/content/reports/eq_research_reports_listed.htm",
