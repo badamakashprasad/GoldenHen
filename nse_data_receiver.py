@@ -11,36 +11,15 @@ import logging
 from datetime import datetime
 from collections import OrderedDict
 
-logging.basicConfig(filename='NSE_data_log.log', level=logging.DEBUG)
+logging.basicConfig(filename='D:\\GoldenHen\\NSE_data_log.log', level=logging.DEBUG)
 HEADERS = {
 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36'
 }
 
-# def get_json_data(link):
-#     try:
-#         #print("executing {}".format(link))
-#         data = json.loads(requests.get(link,headers = HEADERS).content)
-#         timestamp = data['time']
-#     except ValueError:
-#         print("Error in retriving : {} Retrying in 5 secs...".format(link))
-#         time.sleep(5)
-#         get_json_data(link)
-#     return data['data'],timestamp
+
+isSimilar_ret = lambda x,y : x['ltP'] == y['ltP']
 
 
-
-
-def statement_(reader,d):
-    data = OrderedDict(d)
-    *_,last = reader
-    del data['timestamp']
-    del last['timestamp']
-    if set(last.items()).intersection(set(data.items())) is not None:
-        return False
-    else:
-        return True
-
- 
 
 def worker(input_queue):
     while True:
@@ -49,15 +28,16 @@ def worker(input_queue):
         if url is None:
             break
         #url = 'https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/niftyStockWatch.json'
-        path = 'NSE_data'
+        path = 'D:\\GoldenHen\\NSE_data\\Companies_data'
         #df_ls = pd.read_csv('ind_nifty500list.csv')
-        df_ls = pd.read_csv('NSE_data/all_companies_list.csv')
+        df_ls = pd.read_csv('D:\\GoldenHen\\NSE_data\\all_companies_list.csv')
         print("Requesting from {}".format(url))
         data,timestamp = base.get_json_data(url)
         print("\nRequest acheived of {}\n".format(url))
         print("Updating data of {}".format(url[url.rfind('/')+1:]))
         for i in range(len(data)):
             d = data[i]
+            ls = []
             try:
                 ls = df_ls[df_ls['Symbol'] == d['symbol']].values.tolist()[0]
             except IndexError as e:
@@ -79,9 +59,10 @@ def worker(input_queue):
             if os.path.isfile(filename):
                 with open(filename,'r',newline='') as fp:
                     reader = csv.DictReader(fp,fieldnames = columns)
-                    flag =  statement_(reader,d)
+                    *_,last = reader
+                    similar = isSimilar_ret(last,d)
                     fp.close()
-                if flag:
+                if not similar:
                     with open(filename,'+a',newline='') as fp:
                         writer = csv.DictWriter(fp,fieldnames = columns)
                         writer.writerow(d)
@@ -98,7 +79,7 @@ def worker(input_queue):
 
 
 def master():
-    df = pd.read_csv('nseJsonListing.csv')
+    df = pd.read_csv('D:\\GoldenHen\\nseJsonListing.csv')
     urls = df['Json Link'].values
     input_queue = multiprocessing.Queue()
     workers = []
