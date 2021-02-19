@@ -72,6 +72,7 @@ def get_latest_nse_all_companies_list(path,name):
 def remove_duplicate(path):
     print(f'Removing duplicate rows from all the files of path : {path}')
     for fileName in tqdm(os.listdir(path),desc='Duplicate Removing'):
+        fileName = os.path.join(path,fileName)
         uni_data = []
         with open(fileName,'r',newline='') as fp:
             reader = csv.DictReader(fp)
@@ -97,6 +98,6 @@ def remove_duplicate(path):
 
 
 #get_latest_nse_all_companies_list(path = vd.NSE_PATH, name = vd.NSE_ALL_COMPANY_LIST_FILENAME)
-#remove_duplicate(vd.NSE_COMPANY_DATA_PATH)
+remove_duplicate(vd.NSE_COMPANY_DATA_PATH)
 
 
