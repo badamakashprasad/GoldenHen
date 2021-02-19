@@ -1,4 +1,5 @@
 import Atom as base
+import variable_data as vd
 import multiprocessing
 import time
 import random
@@ -11,13 +12,19 @@ import logging
 from datetime import datetime
 from collections import OrderedDict
 
-logging.basicConfig(filename='D:\\GoldenHen\\NSE_data_log.log', level=logging.DEBUG)
-HEADERS = {
-'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36'
-}
+logging.basicConfig(filename=vd.NSE_LOG_FILE,format='%(asctime)s %(levelname)-8s %(message)s' ,level=logging.DEBUG ,datefmt='%d-%Y-%m %H:%M:%S')
 
 
-isSimilar_ret = lambda x,y : x['ltP'] == y['ltP']
+
+def isSimilar_ret(csv_data,ret_data):
+    *_,last = csv_data
+    if last['ltP'] == ret_data['ltP']:
+        if ret_data['timestamp'] not in [tp['timestamp'] for tp in csv_data]:
+            return True
+    return False
+
+
+
 
 
 
@@ -27,10 +34,8 @@ def worker(input_queue):
 
         if url is None:
             break
-        #url = 'https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/niftyStockWatch.json'
-        path = 'D:\\GoldenHen\\NSE_data\\Companies_data'
-        #df_ls = pd.read_csv('ind_nifty500list.csv')
-        df_ls = pd.read_csv('D:\\GoldenHen\\NSE_data\\all_companies_list.csv')
+        path = vd.NSE_COMPANY_DATA_PATH
+        df_ls = pd.read_csv(vd.NSE_ALL_COMPANY_LIST_URI)
         print("Requesting from {}".format(url))
         data,timestamp = base.get_json_data(url)
         print("\nRequest acheived of {}\n".format(url))
@@ -59,8 +64,7 @@ def worker(input_queue):
             if os.path.isfile(filename):
                 with open(filename,'r',newline='') as fp:
                     reader = csv.DictReader(fp,fieldnames = columns)
-                    *_,last = reader
-                    similar = isSimilar_ret(last,d)
+                    similar = isSimilar_ret(reader,d)
                     fp.close()
                 if not similar:
                     with open(filename,'+a',newline='') as fp:
@@ -79,7 +83,7 @@ def worker(input_queue):
 
 
 def master():
-    df = pd.read_csv('D:\\GoldenHen\\nseJsonListing.csv')
+    df = pd.read_csv(vd.NSE_INDICES_PATH)
     urls = df['Json Link'].values
     input_queue = multiprocessing.Queue()
     workers = []
@@ -108,6 +112,7 @@ if __name__ == '__main__':
         start = time.time()
         master()
         print("NSE data retirved in {} secs".format(time.time() - start))
+        logging.info("NSE data retirved in {} secs".format(time.time() - start))
         print("---------------- Timestamp : {}----------------------".format(datetime.now()))
         os.system("ping -n 3 localhost >nul")
         os.system("echo.")
