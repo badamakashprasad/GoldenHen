@@ -557,3 +557,6 @@ NSE_data/nseJsonListing.csv
 __pycache__/Atom.cpython-37.pyc
 __pycache__/sqlite_db_maker.cpython-37.pyc
 __pycache__/variable_data.cpython-37.pyc
+NSE_data_log.log
+testing_2.py
+testing.py

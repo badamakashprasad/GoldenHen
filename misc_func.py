@@ -6,6 +6,7 @@ import csv
 import re
 import datetime
 import urllib.request
+import urllib.parse
 import shutil
 import pandas as pd
 import variable_data as vd
@@ -17,19 +18,25 @@ from tqdm import tqdm
 cln = lambda _ : _.strip()
 def get_info_companies(symbol):
         info_dict = {}
-        info_url = f'https://www1.nseindia.com/marketinfo/companyTracker/compInfo.jsp?symbol={symbol}&series=EQ'
-        data = requests.get(info_url,headers = vd.HEADERS).content
-        soup = BeautifulSoup(data,features="lxml")
-        for a in soup.find_all('td'):
-            if a.find('b') is None:
-                break
-            elif a.find('b').get_text().find(":") is not -1:
-                temp_info_ls = a.get_text().split(":")
-                info_dict[cln(temp_info_ls[0])] = cln(temp_info_ls[1])
-        return info_dict
+        try:
+            symbol = urllib.parse.quote(symbol.encode('utf8'))
+            info_url = f'https://www1.nseindia.com/marketinfo/companyTracker/compInfo.jsp?symbol={symbol}&series=EQ'
+            data = requests.get(info_url,headers = vd.HEADERS).content
+            soup = BeautifulSoup(data,features="lxml")
+            for a in soup.find_all('td'):
+                if a.find('b') is None:
+                    break
+                elif a.find('b').get_text().find(":") is not -1:
+                    temp_info_ls = a.get_text().split(":")
+                    info_dict[cln(temp_info_ls[0])] = cln(temp_info_ls[1])
+            return info_dict
+        except:
+            pass
+
 
 def get_latest_nse_all_companies_list(path,name):
     print("Extraction of all companies of NSE Started")
+    name = name[:name.find('.')]
     data = requests.get(vd.ALL_COMPANY_LIST_URL,headers = vd.HEADERS).content
     soup = BeautifulSoup(data,features="lxml")
     blk = soup.find('div',{'class':'midContainer'})
@@ -50,10 +57,13 @@ def get_latest_nse_all_companies_list(path,name):
     
 
     for symbol in tqdm(df['Symbol'],desc="Extracting"):
-        info_dict = get_info_companies(symbol)
+        try:
+            info_dict = get_info_companies(symbol)
+            for key in info_dict:  
+                df.loc[df['Symbol'] == symbol,key] = info_dict[key]
+        except:
+            continue
 
-        for key in info_dict:  
-            df.loc[df['Symbol'] == symbol,key] = info_dict[key]
     
     df.drop('Unnamed: 4',axis=1,inplace=True)
     df.to_csv(os.path.join(path,name+".csv"))
