@@ -20,5 +20,5 @@ BSE_COMPANY_DATA_PATH = os.path.join(BSE_PATH,'Companies_data')
 ALL_COMPANY_LIST_URL = 'https://www.nseindia.com/regulations/listing-compliance/nse-market-capitalisation-all-companies'
 
 
-EMOJI_TABLE = 'D:/GoldenHen/twitter_data/emoji_table.csv'
+EMOJI_JSON = 'D:/GoldenHen/twitter_data/emoji_json.json'
 BEARER_TOKEN = 'AAAAAAAAAAAAAAAAAAAAAE27MwEAAAAAWveY%2F4g5L1coq7x3cVbQ4fFw1%2F8%3DmBMh40c8pfGQjfYwikugcaGqq8LW7aqhaWR2nNcqfS7jehxbqx'
